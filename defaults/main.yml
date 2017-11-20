@@ -1,0 +1,9 @@
+---
+# defaults file for lae.registry
+registry_version: v2.6.2
+
+registry_group: registry
+registry_user: registry
+registry_home: /home/registry
+registry_gopath: "{{ registry_home }}/workspace-go"
+registry_install_prefix: "/usr/local"

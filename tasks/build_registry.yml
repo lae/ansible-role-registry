@@ -1,0 +1,15 @@
+---
+- name: Pull the docker/distribution git repository
+  git:
+    repo: "https://github.com/docker/distribution.git"
+    dest: "{{ registry_gopath }}/src/github.com/docker/distribution"
+    version: "{{ registry_version }}"
+  register: __registry_repository
+
+- name: Build the docker registry binary
+  shell: "make build && make binaries"
+  args:
+    chdir: "{{ registry_gopath }}/src/github.com/docker/distribution"
+  environment:
+    GOPATH: "{{ registry_gopath }}"
+  when: __registry_repository | changed

@@ -1,0 +1,29 @@
+---
+# tasks file for lae.registry
+- name: Install dependencies for building registry
+  package:
+    name: "{{ item }}"
+  with_items:
+    - git
+    - make
+
+- name: Create Docker Registry user group
+  group:
+    name: "{{ registry_group }}"
+
+- name: Create Docker Registry user and home directory
+  user:
+    name: "{{ registry_user }}"
+    group: "{{ registry_group }}"
+    home: "{{ registry_home }}"
+
+- include_tasks: build_registry.yml
+  become: True
+  become_user: "{{ registry_user }}"
+
+- name: Install the docker registry binary
+  copy:
+    src: "{{ registry_gopath }}/src/github.com/docker/distribution/bin/registry"
+    dest: "{{ registry_install_prefix }}/bin/registry"
+    mode: 0755
+    remote_src: true

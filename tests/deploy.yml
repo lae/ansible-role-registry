@@ -1,0 +1,8 @@
+---
+- hosts: registry
+  any_errors_fatal: true
+  roles:
+    - ansible-role-registry
+  environment:
+    GOROOT: "/opt/go/{{ golang_version }}"
+    PATH: "{{ ansible_env.PATH }}:/opt/go/{{ golang_version }}/bin"

@@ -1,0 +1,7 @@
+---
+- hosts: registry
+  tasks:
+    - name: Test that registry works
+      shell: "registry --version"
+#    - block:
+#      ignore_errors: yes

@@ -7,9 +7,11 @@
   register: __registry_repository
 
 - name: Build the docker registry binary
-  shell: 'PATH="$PATH:{{ registry_gopath }}/bin" make build && make binaries'
+  shell: "make build && make binaries"
   args:
     chdir: "{{ registry_gopath }}/src/github.com/docker/distribution"
   environment:
     GOPATH: "{{ registry_gopath }}"
+    GOROOT: "{{ registry_golang_install_dir }}"
+    PATH: "{{ ansible_env.PATH }}:{{ registry_golang_install_dir }}/bin"
   when: __registry_repository | changed

@@ -1,0 +1,22 @@
+---
+- name: Create download and install directory for Go language SDK
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ registry_golang_download_dir }}"
+    - "{{ registry_golang_install_dir }}"
+
+- name: Download Go language SDK
+  get_url:
+    url: "{{ registry_golang_url }}"
+    dest: "{{ registry_golang_download_dir }}/{{ registry_golang_file }}"
+    sha256sum: "{{ registry_golang_sha256sum }}"
+
+- name: Install Go language under Docker Registry user
+  unarchive:
+    src: "{{ registry_golang_download_dir }}/{{ registry_golang_file }}"
+    dest: "{{ registry_golang_install_dir }}"
+    extra_opts: "--strip-components=1"
+    remote_src: yes
+    creates: "{{ registry_golang_install_dir }}/bin"

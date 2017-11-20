@@ -1,3 +1,2 @@
 ---
 ansible_ssh_user: root
-golang_version: "1.9.2"

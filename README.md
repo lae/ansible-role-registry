@@ -6,12 +6,6 @@ lae.registry
 
 Builds and deploys Docker Registry v2.
 
-Requirements
-------------
-
-The Go language SDK must be installed and in your `PATH` prior to running this
-role. The [gantsign.golang][go-role] is recommended.
-
 License
 -------
 

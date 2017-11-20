@@ -5,8 +5,16 @@ registry_version: v2.6.2
 registry_group: registry
 registry_user: registry
 registry_home: /home/registry
-registry_gopath: "{{ registry_home }}/workspace-go"
 registry_install_prefix: "/usr/local"
 
 registry_use_auth_server: yes
 registry_auth_version: 1.3
+
+# Go Language distributable used for compiling registry/auth_server
+registry_golang_version: 1.9.2
+registry_golang_sha256sum: "de874549d9a8d8d8062be05808509c09a88a248e77ec14eb77453530829ac02b"
+registry_golang_file: "go{{ registry_golang_version }}.linux-amd64.tar.gz"
+registry_golang_url: "https://storage.googleapis.com/golang/{{ registry_golang_file }}"
+registry_golang_download_dir: "{{ registry_home + '/.ansible/tmp/downloads' }}"
+registry_golang_install_dir: "{{ registry_home }}/go/{{ registry_golang_version }}"
+registry_gopath: "{{ registry_home }}/workspace-go"

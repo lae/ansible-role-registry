@@ -18,6 +18,10 @@
     group: "{{ registry_group }}"
     home: "{{ registry_home }}"
 
+- include_tasks: install_golang.yml
+  become: True
+  become_user: "{{ registry_user }}"
+
 - include_tasks: build_registry.yml
   become: True
   become_user: "{{ registry_user }}"

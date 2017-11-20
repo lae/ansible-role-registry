@@ -24,10 +24,9 @@
       dest: "{{ registry_gopath }}/src/github.com/cesanta/docker_auth/auth_server/version.go"
 
   - name: Build the auth_server binary
-    shell: "make deps && make"
+    shell: 'PATH="$PATH:{{ registry_gopath }}/bin" make deps && make'
     args:
       chdir: "{{ registry_gopath }}/src/github.com/cesanta/docker_auth/auth_server"
     environment:
       GOPATH: "{{ registry_gopath }}"
-
   when: __registry_auth_repository | changed

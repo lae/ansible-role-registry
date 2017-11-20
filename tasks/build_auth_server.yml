@@ -1,0 +1,33 @@
+---
+- name: Pull the cesanta/docker_auth git repository
+  git:
+    repo: "https://github.com/cesanta/docker_auth.git"
+    dest: "{{ registry_gopath }}/src/github.com/cesanta/docker_auth"
+    version: "{{ registry_auth_version }}"
+  register: __registry_auth_repository
+
+- block:
+  - name: Populate version.txt for docker_auth
+    copy:
+      content: "{{ registry_auth_version }}"
+      dest: "{{ registry_gopath }}/src/github.com/cesanta/docker_auth/auth_server/version.txt"
+
+  - name: Populate version.go for docker_auth
+    copy:
+      content: |
+        package main
+
+        const (
+          Version = "{{ registry_auth_version }}"
+          BuildId = "{{ "%Y%m%d-%H%M%S" | strftime(ansible_date_time.epoch) }}/{{ registry_auth_version }}@{{ __registry_auth_repository.after[:8] }}"
+        )
+      dest: "{{ registry_gopath }}/src/github.com/cesanta/docker_auth/auth_server/version.go"
+
+  - name: Build the auth_server binary
+    shell: "make deps && make"
+    args:
+      chdir: "{{ registry_gopath }}/src/github.com/cesanta/docker_auth/auth_server"
+    environment:
+      GOPATH: "{{ registry_gopath }}"
+
+  when: __registry_auth_repository | changed

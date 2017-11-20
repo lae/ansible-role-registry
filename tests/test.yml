@@ -3,5 +3,7 @@
   tasks:
     - name: Test that registry works
       shell: "registry --version"
-#    - block:
-#      ignore_errors: yes
+    - block:
+      - name: Test that the auth_server works
+        shell: "registry_authd"
+      ignore_errors: yes

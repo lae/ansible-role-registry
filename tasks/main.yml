@@ -6,6 +6,7 @@
   with_items:
     - git
     - make
+    - gcc
 
 - name: Create Docker Registry user group
   group:
@@ -21,9 +22,21 @@
   become: True
   become_user: "{{ registry_user }}"
 
+- include_tasks: build_auth_server.yml
+  become: True
+  become_user: "{{ registry_user }}"
+  when: registry_use_auth_server
+
 - name: Install the docker registry binary
   copy:
     src: "{{ registry_gopath }}/src/github.com/docker/distribution/bin/registry"
     dest: "{{ registry_install_prefix }}/bin/registry"
+    mode: 0755
+    remote_src: true
+
+- name: Install the registry authentication server binary
+  copy:
+    src: "{{ registry_gopath }}/src/github.com/cesanta/docker_auth/auth_server/auth_server"
+    dest: "{{ registry_install_prefix }}/bin/registry_authd"
     mode: 0755
     remote_src: true
